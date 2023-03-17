@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="linc.fun.dormitory.mapper.RoomBedMapper">
+    <resultMap id="BaseResultMap" type="linc.fun.dormitory.po.RoomBed">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="building_room_id" jdbcType="BIGINT" property="buildingRoomId"/>
+        <result column="student_id" jdbcType="BIGINT" property="studentId"/>
+        <result column="sno" jdbcType="VARCHAR" property="sno"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="remark" jdbcType="VARCHAR" property="remark"/>
+        <result column="gmt_create" jdbcType="TIMESTAMP" property="gmtCreate"/>
+        <result column="gmt_modified" jdbcType="TIMESTAMP" property="gmtModified"/>
+    </resultMap>
+
+    <insert id="insertList">
+        insert into room_bed(
+        building_room_id,
+        `name`,
+        remark
+        ) values
+        <foreach collection="beds" index="index" item="item" separator=",">
+            (
+            #{item.buildingRoomId},
+            #{item.name},
+            #{item.remark}
+            )
+        </foreach>
+    </insert>
+</mapper>

@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="linc.fun.dormitory.mapper.StudentMapper">
+    <resultMap id="BaseResultMap" type="linc.fun.dormitory.po.Student">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="sno" jdbcType="VARCHAR" property="sno"/>
+        <result column="academy" jdbcType="VARCHAR" property="academy"/>
+        <result column="major" jdbcType="VARCHAR" property="major"/>
+        <result column="grade" jdbcType="TINYINT" property="grade"/>
+        <result column="in_class" jdbcType="VARCHAR" property="inClass"/>
+        <result column="username" jdbcType="VARCHAR" property="username"/>
+        <result column="password" jdbcType="VARCHAR" property="password"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="gender" jdbcType="TINYINT" property="gender"/>
+        <result column="age" jdbcType="INTEGER" property="age"/>
+        <result column="phone" jdbcType="VARCHAR" property="phone"/>
+        <result column="email" jdbcType="VARCHAR" property="email"/>
+        <result column="avatar" jdbcType="VARCHAR" property="avatar"/>
+        <result column="gmt_create" jdbcType="TIMESTAMP" property="gmtCreate"/>
+        <result column="gmt_modified" jdbcType="TIMESTAMP" property="gmtModified"/>
+    </resultMap>
+
+    <resultMap id="StudentBOResultMap" type="linc.fun.dormitory.bo.StudentBO" extends="BaseResultMap">
+    </resultMap>
+
+    <select id="selectByPage" resultMap="StudentBOResultMap">
+        select id,
+               sno,
+               academy,
+               major,
+               grade,
+               in_class,
+               username,
+               `name`,
+               gender,
+               age,
+               phone,
+               email,
+               avatar,
+               gmt_create,
+               gmt_modified
+        from student
+        <where>
+            <if test="query.username != null and query.username != ''">
+                and username like concat('%', #{query.username}, '%')
+            </if>
+            <if test="query.name != null and query.name != ''">
+                and name like concat('%', #{query.name}, '%')
+            </if>
+            <if test="query.sno != null and query.sno != ''">
+                and sno like concat('%', #{query.sno}, '%')
+            </if>
+        </where>
+    </select>
+
+    <select id="selectStudentAttendanceBOByPage" resultType="linc.fun.dormitory.bo.StudentAttendanceBO">
+        select id,
+               sno,
+               academy,
+               major,
+               grade,
+               in_class,
+               username,
+               `name`,
+               gender,
+               age,
+               phone,
+               email,
+               avatar,
+               gmt_create,
+               gmt_modified
+        from student
+        <where>
+            <if test="query.name != null and query.name != ''">
+                and `name` like concat('%', #{query.name}, '%')
+            </if>
+            <if test="query.sno != null and query.sno != ''">
+                and sno like concat('%', #{query.sno}, '%')
+            </if>
+        </where>
+    </select>
+</mapper>

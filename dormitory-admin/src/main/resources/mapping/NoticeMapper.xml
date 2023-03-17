@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="linc.fun.dormitory.mapper.NoticeMapper">
+    <resultMap id="BaseResultMap" type="linc.fun.dormitory.po.Notice">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="title" jdbcType="VARCHAR" property="title"/>
+        <result column="content" jdbcType="LONGVARCHAR" property="content"/>
+        <result column="author" jdbcType="VARCHAR" property="author"/>
+        <result column="gmt_create" jdbcType="TIMESTAMP" property="gmtCreate"/>
+        <result column="gmt_modified" jdbcType="TIMESTAMP" property="gmtModified"/>
+    </resultMap>
+
+
+    <select id="selectByNums" resultType="linc.fun.dormitory.vo.NoticeVO">
+        select id, title, content, author, gmt_create
+        from notice
+        order by gmt_create desc
+        limit #{nums}
+    </select>
+</mapper>

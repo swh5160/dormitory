@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="linc.fun.dormitory.mapper.BuildingRoomMapper">
+    <resultMap id="BaseResultMap" type="linc.fun.dormitory.po.BuildingRoom">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="building_id" jdbcType="BIGINT" property="buildingId"/>
+        <result column="bno" jdbcType="VARCHAR" property="bno"/>
+        <result column="rno" jdbcType="VARCHAR" property="rno"/>
+        <result column="floor" jdbcType="INTEGER" property="floor"/>
+        <result column="max_occupancy" jdbcType="INTEGER" property="maxOccupancy"/>
+        <result column="current_occupancy" jdbcType="INTEGER" property="currentOccupancy"/>
+        <result column="gmt_create" jdbcType="TIMESTAMP" property="gmtCreate"/>
+        <result column="gmt_modified" jdbcType="TIMESTAMP" property="gmtModified"/>
+    </resultMap>
+
+    <!--子查询解决分页问题-->
+    <resultMap id="BuildingRoomBOResultMap" type="linc.fun.dormitory.bo.BuildingRoomBO" extends="BaseResultMap">
+        <collection column="id" select="selectBuildingId"
+                    property="roomBeds" javaType="list" ofType="linc.fun.dormitory.po.RoomBed"/>
+    </resultMap>
+    <select id="selectBuildingId" resultType="linc.fun.dormitory.po.RoomBed">
+        select id,
+               building_room_id,
+               student_id,
+               sno,
+               `name`,
+               remark
+        from room_bed rb
+        where rb.building_room_id = #{building_room_id}
+    </select>
+
+    <select id="selectByPage" resultMap="BuildingRoomBOResultMap">
+        select br.id,
+               br.building_id,
+               br.bno,
+               br.rno,
+               br.floor,
+               br.max_occupancy,
+               br.current_occupancy,
+               br.gmt_create,
+               br.gmt_modified
+        from building_room br
+        <where>
+            <if test="query.bno != null and query.bno != ''">
+                and bno like concat('%', #{query.bno}, '%')
+            </if>
+            <if test="query.rno != null and query.rno != ''">
+                and rno like concat('%', #{query.rno}, '%')
+            </if>
+        </where>
+    </select>
+
+    <select id="selectAccommodationInfo" resultType="linc.fun.dormitory.vo.BuildingRoomInfoVO">
+        select sum(br.max_occupancy) all_count, (sum(br.max_occupancy) - sum(br.current_occupancy)) empty_count
+        from building_room br
+    </select>
+</mapper>

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="linc.fun.dormitory.mapper.ProblemMapper">
+    <resultMap id="BaseResultMap" type="linc.fun.dormitory.po.Problem">
+        <!--@mbg.generated-->
+        <!--@Table problem-->
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="building_id" jdbcType="BIGINT" property="buildingId"/>
+        <result column="building_room_id" jdbcType="BIGINT" property="buildingRoomId"/>
+        <result column="student_id" jdbcType="BIGINT" property="studentId"/>
+        <result column="student_name" jdbcType="VARCHAR" property="studentName"/>
+        <result column="rno" jdbcType="VARCHAR" property="rno"/>
+        <result column="bno" jdbcType="VARCHAR" property="bno"/>
+        <result column="type" jdbcType="TINYINT" property="type"/>
+        <result column="title" jdbcType="VARCHAR" property="title"/>
+        <result column="content" jdbcType="LONGVARCHAR" property="content"/>
+        <result column="pass" jdbcType="BOOLEAN" property="pass"/>
+        <result column="reply" jdbcType="VARCHAR" property="reply"/>
+        <result column="gmt_create" jdbcType="TIMESTAMP" property="gmtCreate"/>
+        <result column="gmt_modified" jdbcType="TIMESTAMP" property="gmtModified"/>
+    </resultMap>
+
+    <select id="selectByNums" resultType="linc.fun.dormitory.vo.ProblemVO">
+        select id,
+               building_id,
+               bno,
+               building_room_id,
+               rno,
+               student_id,
+               student_name,
+               type,
+               title,
+               content,
+               pass,
+               reply,
+               gmt_create,
+               gmt_modified
+        from problem
+        order by gmt_create desc
+        limit #{nums}
+    </select>
+</mapper>
